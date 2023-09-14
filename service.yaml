@@ -1,0 +1,26 @@
+apiVersion: v1
+metadata:
+   name: nfs-service  
+kind: Service
+spec: 
+   type: NodePort
+   ports:
+     - port: 80
+       nodePort: 30085
+   selector:
+      app: nfs     
+     
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+   name: lb-service
+spec:
+   selector:
+      app: nginx
+   ports:
+     - port: 80
+   type: LoadBalancer 

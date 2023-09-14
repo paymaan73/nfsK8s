@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+   name: nfs-deployment
+   labels: 
+      app: nfs-deployment
+   
+spec:
+   replicas: 3
+   selector:
+      matchLabels:
+         app: nfs
+   template:
+      metadata:
+         name: web-nfs
+         labels:
+            app: nfs
+      spec:
+         containers:
+         - name: nginx-nfs
+           image: docker.arvancloud.ir/nginx
+           ports:
+           - containerPort: 80  
+             #command: ["/bin/bash", "-c", "--"]
+             #args: ["while true; do sleep 30; done;"]
+           volumeMounts:
+             - name: volume-nfs-data
+               mountPath: /usr/share/nginx/html/
+
+
+         volumes:
+         - name: volume-nfs-data
+           nfs:
+              server: 192.168.122.234
+              path: /var/nfs/general/ 
+
